@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Chat - Authentication</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #121212 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        
+        .header {
+            background: #2563eb;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .logo {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: white;
+        }
+        
+        .header h2 {
+            font-weight: 600;
+            font-size: 22px;
+            margin: 0;
+        }
+        
+        .form-container {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #d0d0d0;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: #2b2b2b;
+            border: 1px solid #444;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #e0e0e0;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: #2563eb;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+        }
+        
+        .errorlist {
+            color: #ef4444;
+            margin-top: 4px;
+            list-style: none;
+            font-size: 12px;
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #a0a0a0;
+            margin-top: 4px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: #1d4ed8;
+        }
+        
+        .link-container {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+            font-size: 13px;
+        }
+        
+        .link-container a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .link-container a:hover {
+            color: #60a5fa;
+            text-decoration: underline;
+        }
+        
+        .secret-code-note {
+            background: #2b2b2b;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #a0a0a0;
+            border-left: 3px solid #2563eb;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 38px;
+            cursor: pointer;
+            color: #a0a0a0;
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        @media (max-width: 500px) {
+            .container {
+                border-radius: 8px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .logo {
+                left: 15px;
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-height: 700px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                max-width: 380px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2>Secret Chat Registration</h2>
+        </div>
+        
+        <div class="form-container">
+            <!-- For login.html, replace the form section with this: -->
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="id_username">Username</label>
+        <input type="text" name="username" id="id_username" required autocomplete="username">
+    </div>
+    
+    <div class="form-group password-container">
+        <label for="id_password">Password</label>
+        <input type="password" name="password" id="id_password" required autocomplete="current-password">
+        <span class="password-toggle" onclick="togglePassword('id_password')">
+            <i class="far fa-eye"></i>
+        </span>
+    </div>
+    
+    <div class="form-group">
+        <label for="id_secret_code">Secret Code</label>
+        <input type="text" name="secret_code" id="id_secret_code" required>
+        <p class="help-text">Enter the secret code to login.</p>
+    </div>
+    
+    <button type="submit" class="btn">Login</button>
+</form>
+
+<!-- And update the link container to: -->
+<div class="link-container">
+    <p>Don't have an account? <a href="{% url 'chat:register' %}">Register here</a></p>
+</div>
+            <div class="secret-code-note">
+                <p><strong>Note:</strong> You need the correct secret code to register or login to this system.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = passwordInput.nextElementSibling.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+        
+        // Adjust layout to ensure no scrolling
+        function adjustLayout() {
+            const container = document.querySelector('.container');
+            const body = document.body;
+            
+            if (container.offsetHeight > window.innerHeight - 40) {
+                body.style.padding = '10px 0';
+                container.style.maxWidth = '95%';
+            }
+        }
+        
+        window.addEventListener('load', adjustLayout);
+        window.addEventListener('resize', adjustLayout);
+    </script>
+</body>
+</html>

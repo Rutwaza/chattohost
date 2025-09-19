@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Chat - Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #121212 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #e0e0e0;
+            letter-spacing: 1px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 360px;
+            background: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            border: 1px solid #333;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        
+        .header {
+            background: #2563eb;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .header h2 {
+            font-weight: 600;
+            font-size: 1.3rem;
+            margin: 0;
+        }
+        
+        .form-container {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #d0d0d0;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            background: #2b2b2b;
+            border: 1px solid #444;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #e0e0e0;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: #2563eb;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+        }
+        
+        .errorlist {
+            color: #ef4444;
+            margin-top: 4px;
+            list-style: none;
+            font-size: 12px;
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #a0a0a0;
+            margin-top: 4px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background: #1d4ed8;
+        }
+        
+        .link-container {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+            font-size: 13px;
+        }
+        
+        .link-container a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .link-container a:hover {
+            color: #60a5fa;
+            text-decoration: underline;
+        }
+        
+        .secret-code-note {
+            background: #2b2b2b;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #a0a0a0;
+            border-left: 3px solid #2563eb;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 34px;
+            cursor: pointer;
+            color: #a0a0a0;
+            font-size: 14px;
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #a0a0a0;
+        }
+        
+        /* Custom scrollbar for the container */
+        .container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .container::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        .container::-webkit-scrollbar-thumb {
+            background: #2563eb;
+            border-radius: 3px;
+        }
+        
+        .container::-webkit-scrollbar-thumb:hover {
+            background: #1d4ed8;
+        }
+        
+        @media (max-width: 500px) {
+            .container {
+                max-width: 320px;
+                border-radius: 8px;
+            }
+            
+            .form-container {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+            
+            .logo-text {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-height: 700px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                max-width: 340px;
+            }
+            
+            .form-container {
+                padding: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            .logo-container {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <div class="logo">
+            <i class="fas fa-lock"></i>
+        </div>
+        <div class="logo-text">Secret Chat</div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h2>Create Your Account</h2>
+        </div>
+        
+        <div class="form-container">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_username">Username</label>
+                    <input type="text" name="username" id="id_username" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_email">Email</label>
+                    <input type="email" name="email" id="id_email" required autocomplete="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_phone">Phone</label>
+                    <input type="text" name="phone" id="id_phone" required>
+                </div>
+                
+                <div class="form-group password-container">
+                    <label for="id_password1">Password</label>
+                    <input type="password" name="password1" id="id_password1" required autocomplete="new-password">
+                    <span class="password-toggle" onclick="togglePassword('id_password1')">
+                        <i class="far fa-eye"></i>
+                    </span>
+                </div>
+                
+                <div class="form-group password-container">
+                    <label for="id_password2">Confirm Password</label>
+                    <input type="password" name="password2" id="id_password2" required autocomplete="new-password">
+                    <span class="password-toggle" onclick="togglePassword('id_password2')">
+                        <i class="far fa-eye"></i>
+                    </span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_secret_code">Secret Code</label>
+                    <input type="text" name="secret_code" id="id_secret_code" required>
+                    <p class="help-text">Enter the secret code to join.</p>
+                </div>
+                
+                <button type="submit" class="btn">Register</button>
+            </form>
+            
+            <div class="link-container">
+                <p>Already have an account? <a href="{% url 'chat:login' %}">Login here</a>.</p>
+            </div>
+            
+            <div class="secret-code-note">
+                <p><strong>Note:</strong> You need the correct secret code to register or login to this system.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2023 Secret Chat. All rights reserved.</p>
+    </div>
+
+    <script>
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = passwordInput.nextElementSibling.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+        
+        // Adjust layout to ensure slim design
+        function adjustLayout() {
+            const container = document.querySelector('.container');
+            if (window.innerWidth > 400) {
+                container.style.maxWidth = '360px';
+            } else {
+                container.style.maxWidth = '95%';
+            }
+        }
+        
+        window.addEventListener('load', adjustLayout);
+        window.addEventListener('resize', adjustLayout);
+    </script>
+</body>
+</html>
