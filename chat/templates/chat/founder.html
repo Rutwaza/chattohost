@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexon - Computer Engineer & Tech Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #0a0a12;
+            color: #00ffea;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 234, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 212, 0.05) 0%, transparent 20%);
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Matrix Rain Effect */
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        /* Header Styles */
+        header {
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(0, 255, 234, 0.3);
+            position: relative;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #00ffea;
+        }
+        
+        .logo span {
+            color: #ff00d4;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: #00ffea;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: #ff00d4;
+            text-shadow: 0 0 5px #ff00d4;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #ff00d4;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0, 255, 234, 0.1) 0%, rgba(255, 0, 212, 0.1) 100%);
+            z-index: -1;
+        }
+        
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px #00ffea;
+        }
+        
+        .hero .tagline {
+            font-size: 22px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: #a0f0eb;
+        }
+        
+        .highlight {
+            color: #ff00d4;
+            text-shadow: 0 0 5px #ff00d4;
+        }
+        
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid rgba(0, 255, 234, 0.1);
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ffea;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -10px;
+            left: 0;
+            background: linear-gradient(90deg, #00ffea, #ff00d4);
+        }
+        
+        .about-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #a0f0eb;
+        }
+        
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .project-card {
+            background: rgba(10, 15, 30, 0.7);
+            border: 1px solid rgba(0, 255, 234, 0.3);
+            padding: 25px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 255, 234, 0.2);
+            border-color: #00ffea;
+        }
+        
+        .project-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #00ffea;
+        }
+        
+        .project-card p {
+            color: #a0f0eb;
+            font-size: 15px;
+        }
+        
+        /* Skills Section */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .skill-category {
+            background: rgba(10, 15, 30, 0.7);
+            border: 1px solid rgba(0, 255, 234, 0.3);
+            padding: 25px;
+            border-radius: 5px;
+        }
+        
+        .skill-category h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #ff00d4;
+        }
+        
+        .skill-list {
+            list-style: none;
+        }
+        
+        .skill-list li {
+            margin-bottom: 10px;
+            color: #a0f0eb;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .skill-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #00ffea;
+        }
+        
+        /* Vision Section */
+        .vision-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .vision-motto {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            margin-bottom: 30px;
+            color: #ff00d4;
+            text-shadow: 0 0 10px rgba(255, 0, 212, 0.5);
+            font-style: italic;
+        }
+        
+        .vision-text {
+            font-size: 18px;
+            color: #a0f0eb;
+            line-height: 1.8;
+        }
+        
+        /* Contact Section */
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-top: 30px;
+        }
+        
+        .contact-links li {
+            margin: 0 15px;
+        }
+        
+        .contact-links a {
+            color: #00ffea;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 10px 20px;
+            border: 1px solid rgba(0, 255, 234, 0.5);
+            border-radius: 4px;
+        }
+        
+        .contact-links a:hover {
+            color: #0a0a12;
+            background: #00ffea;
+            box-shadow: 0 0 15px #00ffea;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: #a0f0eb;
+            font-size: 14px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #ff00d4;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #00ffea;
+            text-shadow: 0 0 5px #00ffea;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero .tagline {
+                font-size: 18px;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                font-size: 26px;
+            }
+            
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contact-links li {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix"></canvas>
+    
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Nex<span>on</span></div>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#vision">Vision</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Nexon – Computer Engineer & Tech Builder</h1>
+            <p class="tagline">Creating intelligent systems that <span class="highlight">connect people and machines</span></p>
+        </div>
+    </section>
+    
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <p>I'm a computer engineer driven by the challenge of turning bold ideas into real-world solutions. From building face-recognition attendance systems to GPS tracking platforms and location-based service apps, I thrive at the intersection of hardware and software.</p>
+                <p>My goal is to engineer technology that feels seamless and smart—systems that don't just work, but think ahead. Whether it's developing secure communication platforms like SecretChat or creating IoT solutions with embedded systems, I'm passionate about pushing the boundaries of what's possible.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title">Key Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>SecretChat</h3>
+                    <p>Encrypted chat application with sleek cyberpunk UI, real-time messaging, and advanced security features. Built with a focus on user privacy and seamless communication.</p>
+                </div>
+                <div class="project-card">
+                    <h3>Face Recognition Attendance System</h3>
+                    <p>Django + SQLite platform with live facial recognition, automated time logging, and dynamic search capabilities. Streamlines attendance tracking for organizations.</p>
+                </div>
+                <div class="project-card">
+                    <h3>GPS Navigation Monitoring</h3>
+                    <p>Live-tracking solution for training scenarios with real-time location data, route optimization, and performance analytics for units in field exercises.</p>
+                </div>
+                <div class="project-card">
+                    <h3>Location Service App</h3>
+                    <p>Mobile application blending Google Maps-like navigation with community ratings and social features. Enhances local discovery and user engagement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title">Skills & Tools</h2>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3>Languages</h3>
+                    <ul class="skill-list">
+                        <li>Python</li>
+                        <li>JavaScript</li>
+                        <li>C/C++</li>
+                        <li>HTML/CSS</li>
+                        <li>SQL</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Frameworks & Technologies</h3>
+                    <ul class="skill-list">
+                        <li>Django</li>
+                        <li>Node.js</li>
+                        <li>React (learning)</li>
+                        <li>REST APIs</li>
+                        <li>WebSockets</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Hardware & IoT</h3>
+                    <ul class="skill-list">
+                        <li>ESP32</li>
+                        <li>SIM800L</li>
+                        <li>IoT Integration</li>
+                        <li>Sensor Networks</li>
+                        <li>Embedded Systems</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Specializations</h3>
+                    <ul class="skill-list">
+                        <li>AI/ML Implementation</li>
+                        <li>Embedded Systems</li>
+                        <li>Full-Stack Engineering</li>
+                        <li>Cloud Deployment</li>
+                        <li>System Architecture</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="vision">
+        <div class="container">
+            <h2 class="section-title">Vision</h2>
+            <div class="vision-content">
+                <p class="vision-motto">"Engineering the bridge between people and intelligent technology."</p>
+                <p class="vision-text">Building systems today that anticipate tomorrow's needs. My work focuses on creating technology that not only solves current challenges but adapts to future demands. Through careful engineering and forward-thinking design, I aim to develop solutions that make technology more accessible, intuitive, and powerful for everyone.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Connect</h2>
+            <p style="text-align: center; color: #a0f0eb; margin-bottom: 20px;">Reach out through SecretChat or explore my other work</p>
+            <ul class="contact-links">
+                <li><a href="https://github.com/Rutwaza" target="_blank">GitHub</a></li>
+                <li><a href="https://wa.me/250791795771?text=Hello%20Nexon%2C%20I%20found%20your%20site!" target="_blank">WhatsApp</a></li>
+                <li><a href="{% url 'chat:login' %}">NexonChatx</a></li>
+            </ul>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Nexon. All rights reserved. Engineering the future.</p>
+            <a href="{% url 'chat:landing' %}" class="back-link">← Back to SecretChat</a>
+        </div>
+    </footer>
+
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*";
+        const charArray = chars.split('');
+        
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        
+        const drops = [];
+        
+        for(let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 18, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ffea';
+            ctx.font = fontSize + 'px Share Tech Mono';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 35);
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

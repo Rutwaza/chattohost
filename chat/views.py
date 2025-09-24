@@ -36,6 +36,9 @@ def secret_login(request):
 def landing_page(request):
     return render(request, 'chat/landing.html')
 
+def founder(request):
+    return render(request, 'chat/founder.html')
+
 def logout_view(request):
     logout(request)
     return redirect("chat:login")  # redirect to your login page
