@@ -5,149 +5,228 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secret Chat - Authentication</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #121212 0%, #2d2d2d 100%);
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #0a0a12;
+            color: #00ffea;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            color: #e0e0e0;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 234, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 212, 0.05) 0%, transparent 20%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Matrix Rain Effect */
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
         }
         
         .container {
             width: 100%;
-            max-width: 420px;
-            background: #1e1e1e;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            max-width: 450px;
+            background: rgba(10, 15, 30, 0.9);
+            border-radius: 8px;
             overflow: hidden;
-            border: 1px solid #333;
+            border: 1px solid rgba(0, 255, 234, 0.3);
+            box-shadow: 0 0 30px rgba(0, 255, 234, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
         }
         
         .header {
-            background: #2563eb;
-            color: white;
+            background: rgba(0, 20, 40, 0.8);
+            color: #00ffea;
             text-align: center;
-            padding: 20px;
+            padding: 25px 20px;
             position: relative;
+            border-bottom: 1px solid rgba(0, 255, 234, 0.3);
         }
         
         .logo {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 24px;
-            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #00ffea;
+        }
+        
+        .logo span {
+            color: #ff00d4;
         }
         
         .header h2 {
+            font-family: 'Orbitron', sans-serif;
             font-weight: 600;
             font-size: 22px;
-            margin: 0;
+            margin: 10px 0 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         
         .form-container {
-            padding: 20px;
+            padding: 30px;
         }
         
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            position: relative;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 500;
-            color: #d0d0d0;
+            color: #a0f0eb;
             font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .form-group input {
             width: 100%;
-            padding: 12px;
-            background: #2b2b2b;
-            border: 1px solid #444;
-            border-radius: 6px;
-            font-size: 14px;
-            color: #e0e0e0;
-            transition: all 0.3s;
+            padding: 14px;
+            background: rgba(5, 10, 20, 0.8);
+            border: 1px solid rgba(0, 255, 234, 0.5);
+            border-radius: 4px;
+            font-size: 16px;
+            color: #00ffea;
+            transition: all 0.3s ease;
+            font-family: 'Share Tech Mono', monospace;
         }
         
         .form-group input:focus {
-            border-color: #2563eb;
+            border-color: #ff00d4;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 0 10px rgba(255, 0, 212, 0.5);
+        }
+        
+        .form-group input.error {
+            border-color: #ff3333;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
         }
         
         .errorlist {
-            color: #ef4444;
-            margin-top: 4px;
-            list-style: none;
+            color: #ff3333;
+            margin-top: 5px;
             font-size: 12px;
+            list-style: none;
+            animation: glitch 0.5s linear;
+        }
+        
+        @keyframes glitch {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-3px); }
+            40% { transform: translateX(3px); }
+            60% { transform: translateX(-3px); }
+            80% { transform: translateX(3px); }
+            100% { transform: translateX(0); }
         }
         
         .help-text {
             font-size: 12px;
-            color: #a0a0a0;
+            color: #60a0a0;
             margin-top: 4px;
         }
         
         .btn {
             width: 100%;
-            padding: 12px;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
+            padding: 15px;
+            background: transparent;
+            color: #00ffea;
+            border: 2px solid #00ffea;
+            border-radius: 4px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
             margin-top: 10px;
         }
         
         .btn:hover {
-            background: #1d4ed8;
+            background: #00ffea;
+            color: #0a0a12;
+            box-shadow: 0 0 20px #00ffea;
+        }
+        
+        .btn:active {
+            transform: translateY(2px);
         }
         
         .link-container {
             text-align: center;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #333;
-            font-size: 13px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 255, 234, 0.3);
+            font-size: 14px;
         }
         
         .link-container a {
-            color: #2563eb;
+            color: #ff00d4;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            position: relative;
         }
         
         .link-container a:hover {
-            color: #60a5fa;
-            text-decoration: underline;
+            color: #00ffea;
+            text-shadow: 0 0 5px #00ffea;
+        }
+        
+        .link-container a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ff00d4;
+            transition: width 0.3s ease;
+        }
+        
+        .link-container a:hover::after {
+            width: 100%;
         }
         
         .secret-code-note {
-            background: #2b2b2b;
-            padding: 12px;
-            border-radius: 6px;
-            margin-top: 15px;
+            background: rgba(5, 10, 20, 0.8);
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
             font-size: 12px;
-            color: #a0a0a0;
-            border-left: 3px solid #2563eb;
+            color: #a0f0eb;
+            border-left: 3px solid #ff00d4;
+        }
+        
+        .password-container {
+            position: relative;
         }
         
         .password-toggle {
@@ -156,15 +235,46 @@
             top: 38px;
             cursor: pointer;
             color: #a0a0a0;
+            transition: color 0.3s;
         }
         
-        .password-container {
-            position: relative;
+        .password-toggle:hover {
+            color: #00ffea;
+        }
+        
+        .hacker-terminal {
+            background: rgba(5, 5, 15, 0.8);
+            border: 1px solid #00ffea;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #a0f0eb;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        
+        .terminal-line {
+            margin-bottom: 5px;
+            display: flex;
+        }
+        
+        .terminal-prompt {
+            color: #ff00d4;
+            margin-right: 10px;
+        }
+        
+        .success-message {
+            color: #00ff00;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
         }
         
         @media (max-width: 500px) {
             .container {
-                border-radius: 8px;
+                border-radius: 6px;
             }
             
             .form-container {
@@ -172,12 +282,7 @@
             }
             
             .header {
-                padding: 15px;
-            }
-            
-            .logo {
-                left: 15px;
-                font-size: 20px;
+                padding: 20px 15px;
             }
         }
         
@@ -187,7 +292,7 @@
             }
             
             .container {
-                max-width: 380px;
+                max-width: 400px;
             }
             
             .form-container {
@@ -195,51 +300,168 @@
             }
             
             .form-group {
-                margin-bottom: 12px;
+                margin-bottom: 15px;
             }
+        }
+        
+        /* Glitch effect for errors */
+        .glitch {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00d4;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        
+        .glitch::after {
+            left: -2px;
+            text-shadow: -2px 0 #00ffea;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim {
+            0% { clip: rect(42px, 9999px, 44px, 0); }
+            5% { clip: rect(12px, 9999px, 59px, 0); }
+            10% { clip: rect(48px, 9999px, 29px, 0); }
+            15% { clip: rect(42px, 9999px, 73px, 0); }
+            20% { clip: rect(63px, 9999px, 27px, 0); }
+            25% { clip: rect(34px, 9999px, 55px, 0); }
+            30% { clip: rect(86px, 9999px, 73px, 0); }
+            35% { clip: rect(20px, 9999px, 20px, 0); }
+            40% { clip: rect(26px, 9999px, 60px, 0); }
+            45% { clip: rect(25px, 9999px, 66px, 0); }
+            50% { clip: rect(57px, 9999px, 98px, 0); }
+            55% { clip: rect(5px, 9999px, 46px, 0); }
+            60% { clip: rect(82px, 9999px, 31px, 0); }
+            65% { clip: rect(54px, 9999px, 27px, 0); }
+            70% { clip: rect(28px, 9999px, 99px, 0); }
+            75% { clip: rect(45px, 9999px, 69px, 0); }
+            80% { clip: rect(23px, 9999px, 85px, 0); }
+            85% { clip: rect(54px, 9999px, 84px, 0); }
+            90% { clip: rect(45px, 9999px, 47px, 0); }
+            95% { clip: rect(37px, 9999px, 20px, 0); }
+            100% { clip: rect(73px, 9999px, 99px, 0); }
+        }
+        
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            5% { clip: rect(52px, 9999px, 74px, 0); }
+            10% { clip: rect(79px, 9999px, 85px, 0); }
+            15% { clip: rect(75px, 9999px, 5px, 0); }
+            20% { clip: rect(67px, 9999px, 61px, 0); }
+            25% { clip: rect(14px, 9999px, 79px, 0); }
+            30% { clip: rect(1px, 9999px, 66px, 0); }
+            35% { clip: rect(86px, 9999px, 30px, 0); }
+            40% { clip: rect(23px, 9999px, 98px, 0); }
+            45% { clip: rect(85px, 9999px, 72px, 0); }
+            50% { clip: rect(71px, 9999px, 75px, 0); }
+            55% { clip: rect(2px, 9999px, 48px, 0); }
+            60% { clip: rect(30px, 9999px, 16px, 0); }
+            65% { clip: rect(59px, 9999px, 50px, 0); }
+            70% { clip: rect(41px, 9999px, 62px, 0); }
+            75% { clip: rect(2px, 9999px, 82px, 0); }
+            80% { clip: rect(47px, 9999px, 73px, 0); }
+            85% { clip: rect(3px, 9999px, 27px, 0); }
+            90% { clip: rect(26px, 9999px, 55px, 0); }
+            95% { clip: rect(42px, 9999px, 97px, 0); }
+            100% { clip: rect(38px, 9999px, 49px, 0); }
         }
     </style>
 </head>
 <body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix"></canvas>
+    
     <div class="container">
         <div class="header">
-            <div class="logo">
-                <i class="fas fa-lock"></i>
-            </div>
-            <h2>Secret Chat Registration</h2>
+            <div class="logo">Secret<span>Chat</span></div>
+            <h2>Authentication Required</h2>
         </div>
         
         <div class="form-container">
-            <!-- For login.html, replace the form section with this: -->
-<form method="post">
-    {% csrf_token %}
-    
-    <div class="form-group">
-        <label for="id_username">Username</label>
-        <input type="text" name="username" id="id_username" required autocomplete="username">
-    </div>
-    
-    <div class="form-group password-container">
-        <label for="id_password">Password</label>
-        <input type="password" name="password" id="id_password" required autocomplete="current-password">
-        <span class="password-toggle" onclick="togglePassword('id_password')">
-            <i class="far fa-eye"></i>
-        </span>
-    </div>
-    
-    <div class="form-group">
-        <label for="id_secret_code">Secret Code</label>
-        <input type="text" name="secret_code" id="id_secret_code" required>
-        <p class="help-text">Enter the secret code to login.</p>
-    </div>
-    
-    <button type="submit" class="btn">Login</button>
-</form>
-
-<!-- And update the link container to: -->
-<div class="link-container">
-    <p>Don't have an account? <a href="{% url 'chat:register' %}">Register here</a></p>
-</div>
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Display form errors from backend -->
+                {% if form.errors %}
+                <div class="hacker-terminal">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">></span>
+                        <span>SECURITY ALERT: Authentication failed</span>
+                    </div>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <div class="terminal-line">
+                                <span class="terminal-prompt">></span>
+                                <span>ERROR: {{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <div class="form-group">
+                    <label for="id_username">Username</label>
+                    <input type="text" name="username" id="id_username" required autocomplete="username" value="{{ form.username.value|default:'' }}">
+                    {% if form.username.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.username.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group password-container">
+                    <label for="id_password">Password</label>
+                    <input type="password" name="password" id="id_password" required autocomplete="current-password">
+                    <span class="password-toggle" onclick="togglePassword('id_password')">
+                        <i class="far fa-eye"></i>
+                    </span>
+                    {% if form.password.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.password.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_secret_code">Secret Code</label>
+                    <input type="text" name="secret_code" id="id_secret_code" required value="{{ form.secret_code.value|default:'' }}">
+                    <p class="help-text">Enter the secret code to login.</p>
+                    {% if form.secret_code.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.secret_code.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <button type="submit" class="btn">Login</button>
+            </form>
+            
+            <div class="link-container">
+                <p>Don't have an account? <a href="{% url 'chat:register' %}">Register here</a></p>
+            </div>
+            
             <div class="secret-code-note">
                 <p><strong>Note:</strong> You need the correct secret code to register or login to this system.</p>
             </div>
@@ -247,9 +469,56 @@
     </div>
 
     <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*";
+        const charArray = chars.split('');
+        
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        
+        const drops = [];
+        
+        for(let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 18, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ffea';
+            ctx.font = fontSize + 'px Share Tech Mono';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 35);
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Password toggle function
         function togglePassword(inputId) {
             const passwordInput = document.getElementById(inputId);
-            const toggleIcon = passwordInput.nextElementSibling.querySelector('i');
+            const toggleIcon = passwordInput.parentNode.querySelector('.password-toggle i');
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
@@ -261,6 +530,17 @@
                 toggleIcon.classList.add('fa-eye');
             }
         }
+        
+        // Add error styling to fields with errors
+        document.addEventListener('DOMContentLoaded', function() {
+            const errorInputs = document.querySelectorAll('.errorlist');
+            errorInputs.forEach(errorList => {
+                const input = errorList.previousElementSibling;
+                if (input && input.tagName === 'INPUT') {
+                    input.classList.add('error');
+                }
+            });
+        });
         
         // Adjust layout to ensure no scrolling
         function adjustLayout() {
