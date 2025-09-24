@@ -43,7 +43,7 @@
         
         .container {
             width: 100%;
-            max-width: 450px;
+            max-width: 400px; /* Reduced from 450px */
             background: rgba(10, 15, 30, 0.9);
             border-radius: 8px;
             overflow: hidden;
@@ -58,14 +58,14 @@
             background: rgba(0, 20, 40, 0.8);
             color: #00ffea;
             text-align: center;
-            padding: 25px 20px;
+            padding: 20px; /* Reduced padding */
             position: relative;
             border-bottom: 1px solid rgba(0, 255, 234, 0.3);
         }
         
         .logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 28px;
+            font-size: 24px; /* Slightly smaller */
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 3px;
@@ -79,38 +79,38 @@
         .header h2 {
             font-family: 'Orbitron', sans-serif;
             font-weight: 600;
-            font-size: 22px;
-            margin: 10px 0 0;
+            font-size: 18px; /* Smaller font */
+            margin: 8px 0 0; /* Reduced margin */
             text-transform: uppercase;
             letter-spacing: 2px;
         }
         
         .form-container {
-            padding: 30px;
+            padding: 25px; /* Reduced padding */
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px; /* Slightly reduced */
             position: relative;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px; /* Reduced */
             font-weight: 500;
             color: #a0f0eb;
-            font-size: 14px;
+            font-size: 13px; /* Smaller */
             text-transform: uppercase;
             letter-spacing: 1px;
         }
         
         .form-group input {
             width: 100%;
-            padding: 14px;
+            padding: 12px; /* Reduced padding */
             background: rgba(5, 10, 20, 0.8);
             border: 1px solid rgba(0, 255, 234, 0.5);
             border-radius: 4px;
-            font-size: 16px;
+            font-size: 14px; /* Smaller font */
             color: #00ffea;
             transition: all 0.3s ease;
             font-family: 'Share Tech Mono', monospace;
@@ -129,9 +129,9 @@
         
         .errorlist {
             color: #ff3333;
-            margin-top: 5px;
-            font-size: 12px;
+            margin-top: 4px; /* Reduced */
             list-style: none;
+            font-size: 11px; /* Smaller */
             animation: glitch 0.5s linear;
         }
         
@@ -145,19 +145,19 @@
         }
         
         .help-text {
-            font-size: 12px;
+            font-size: 11px; /* Smaller */
             color: #60a0a0;
-            margin-top: 4px;
+            margin-top: 4px; /* Reduced */
         }
         
         .btn {
             width: 100%;
-            padding: 15px;
+            padding: 12px; /* Reduced padding */
             background: transparent;
             color: #00ffea;
             border: 2px solid #00ffea;
             border-radius: 4px;
-            font-size: 16px;
+            font-size: 14px; /* Smaller */
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -166,7 +166,7 @@
             letter-spacing: 2px;
             position: relative;
             overflow: hidden;
-            margin-top: 10px;
+            margin-top: 8px; /* Reduced */
         }
         
         .btn:hover {
@@ -181,10 +181,10 @@
         
         .link-container {
             text-align: center;
-            margin-top: 25px;
-            padding-top: 20px;
+            margin-top: 20px; /* Reduced */
+            padding-top: 15px; /* Reduced */
             border-top: 1px solid rgba(0, 255, 234, 0.3);
-            font-size: 14px;
+            font-size: 13px; /* Smaller */
         }
         
         .link-container a {
@@ -217,10 +217,10 @@
         
         .secret-code-note {
             background: rgba(5, 10, 20, 0.8);
-            padding: 15px;
+            padding: 12px; /* Reduced */
             border-radius: 4px;
-            margin-top: 20px;
-            font-size: 12px;
+            margin-top: 15px; /* Reduced */
+            font-size: 11px; /* Smaller */
             color: #a0f0eb;
             border-left: 3px solid #ff00d4;
         }
@@ -231,8 +231,8 @@
         
         .password-toggle {
             position: absolute;
-            right: 12px;
-            top: 38px;
+            right: 10px; /* Adjusted */
+            top: 34px; /* Adjusted for smaller input */
             cursor: pointer;
             color: #a0a0a0;
             transition: color 0.3s;
@@ -246,62 +246,30 @@
             background: rgba(5, 5, 15, 0.8);
             border: 1px solid #00ffea;
             border-radius: 4px;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 12px;
+            padding: 12px; /* Reduced */
+            margin-top: 15px; /* Reduced */
+            font-size: 11px; /* Smaller */
             color: #a0f0eb;
-            max-height: 120px;
+            max-height: 100px; /* Reduced */
             overflow-y: auto;
         }
         
         .terminal-line {
-            margin-bottom: 5px;
+            margin-bottom: 4px; /* Reduced */
             display: flex;
         }
         
         .terminal-prompt {
             color: #ff00d4;
-            margin-right: 10px;
+            margin-right: 8px; /* Reduced */
         }
         
         .success-message {
             color: #00ff00;
             text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
+            margin-top: 12px; /* Reduced */
+            font-size: 13px; /* Smaller */
             display: none;
-        }
-        
-        @media (max-width: 500px) {
-            .container {
-                border-radius: 6px;
-            }
-            
-            .form-container {
-                padding: 20px;
-            }
-            
-            .header {
-                padding: 20px 15px;
-            }
-        }
-        
-        @media (max-height: 700px) {
-            body {
-                padding: 10px;
-            }
-            
-            .container {
-                max-width: 400px;
-            }
-            
-            .form-container {
-                padding: 20px;
-            }
-            
-            .form-group {
-                margin-bottom: 15px;
-            }
         }
         
         /* Glitch effect for errors */
@@ -381,89 +349,101 @@
             95% { clip: rect(42px, 9999px, 97px, 0); }
             100% { clip: rect(38px, 9999px, 49px, 0); }
         }
+
+        /* Additional styling for better centering */
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 100vh;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
     <!-- Matrix Rain Background -->
     <canvas id="matrix"></canvas>
     
-    <div class="container">
-        <div class="header">
-            <div class="logo">Secret<span>Chat</span></div>
-            <h2>Authentication Required</h2>
-        </div>
-        
-        <div class="form-container">
-            <form method="post">
-                {% csrf_token %}
-                
-                <!-- Display form errors from backend -->
-                {% if form.errors %}
-                <div class="hacker-terminal">
-                    <div class="terminal-line">
-                        <span class="terminal-prompt">></span>
-                        <span>SECURITY ALERT: Authentication failed</span>
-                    </div>
-                    {% for field, errors in form.errors.items %}
-                        {% for error in errors %}
-                            <div class="terminal-line">
-                                <span class="terminal-prompt">></span>
-                                <span>ERROR: {{ error }}</span>
-                            </div>
-                        {% endfor %}
-                    {% endfor %}
-                </div>
-                {% endif %}
-                
-                <div class="form-group">
-                    <label for="id_username">Username</label>
-                    <input type="text" name="username" id="id_username" required autocomplete="username" value="{{ form.username.value|default:'' }}">
-                    {% if form.username.errors %}
-                        <ul class="errorlist">
-                            {% for error in form.username.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-                
-                <div class="form-group password-container">
-                    <label for="id_password">Password</label>
-                    <input type="password" name="password" id="id_password" required autocomplete="current-password">
-                    <span class="password-toggle" onclick="togglePassword('id_password')">
-                        <i class="far fa-eye"></i>
-                    </span>
-                    {% if form.password.errors %}
-                        <ul class="errorlist">
-                            {% for error in form.password.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_secret_code">Secret Code</label>
-                    <input type="text" name="secret_code" id="id_secret_code" required value="{{ form.secret_code.value|default:'' }}">
-                    <p class="help-text">Enter the secret code to login.</p>
-                    {% if form.secret_code.errors %}
-                        <ul class="errorlist">
-                            {% for error in form.secret_code.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-                
-                <button type="submit" class="btn">Login</button>
-            </form>
-            
-            <div class="link-container">
-                <p>Don't have an account? <a href="{% url 'chat:register' %}">Register here</a></p>
+    <div class="login-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="logo">Nexon<span>Chatx</span></div>
+                <h2>Authentication Required</h2>
             </div>
             
-            <div class="secret-code-note">
-                <p><strong>Note:</strong> You need the correct secret code to register or login to this system.</p>
+            <div class="form-container">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <!-- Display form errors from backend -->
+                    {% if form.errors %}
+                    <div class="hacker-terminal">
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">></span>
+                            <span>SECURITY ALERT: Authentication failed</span>
+                        </div>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <div class="terminal-line">
+                                    <span class="terminal-prompt">></span>
+                                    <span>ERROR: {{ error }}</span>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="form-group">
+                        <label for="id_username">Username</label>
+                        <input type="text" name="username" id="id_username" required autocomplete="username" value="{{ form.username.value|default:'' }}">
+                        {% if form.username.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.username.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group password-container">
+                        <label for="id_password">Password</label>
+                        <input type="password" name="password" id="id_password" required autocomplete="current-password">
+                        <span class="password-toggle" onclick="togglePassword('id_password')">
+                            <i class="far fa-eye"></i>
+                        </span>
+                        {% if form.password.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.password.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_secret_code">Secret Code</label>
+                        <input type="text" name="secret_code" id="id_secret_code" required value="{{ form.secret_code.value|default:'' }}">
+                        <p class="help-text">Enter the secret code to login.</p>
+                        {% if form.secret_code.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.secret_code.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn">Login</button>
+                </form>
+                
+                <div class="link-container">
+                    <p>Don't have an account? <a href="{% url 'chat:register' %}">Register here</a></p>
+                </div>
+                
+                <div class="secret-code-note">
+                    <p><strong>Note:</strong> You need the correct secret code to register or login to this system.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -541,20 +521,6 @@
                 }
             });
         });
-        
-        // Adjust layout to ensure no scrolling
-        function adjustLayout() {
-            const container = document.querySelector('.container');
-            const body = document.body;
-            
-            if (container.offsetHeight > window.innerHeight - 40) {
-                body.style.padding = '10px 0';
-                container.style.maxWidth = '95%';
-            }
-        }
-        
-        window.addEventListener('load', adjustLayout);
-        window.addEventListener('resize', adjustLayout);
     </script>
 </body>
 </html>

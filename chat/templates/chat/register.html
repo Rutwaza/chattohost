@@ -5,223 +5,306 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secret Chat - Registration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #121212 0%, #2d2d2d 100%);
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #0a0a12;
+            color: #00ffea;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            color: #e0e0e0;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 234, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 212, 0.05) 0%, transparent 20%);
+            position: relative;
+            overflow: hidden;
         }
         
-        .logo-container {
-            text-align: center;
-            margin-bottom: 20px;
+        /* Matrix Rain Effect */
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
         }
         
-        .logo {
-            font-size: 2.5rem;
-            color: #2563eb;
-            margin-bottom: 10px;
-        }
-        
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #e0e0e0;
-            letter-spacing: 1px;
+        .register-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 100vh;
+            padding: 20px;
         }
         
         .container {
             width: 100%;
-            max-width: 360px;
-            background: #1e1e1e;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            max-width: 420px;
+            background: rgba(10, 15, 30, 0.9);
+            border-radius: 8px;
             overflow: hidden;
-            border: 1px solid #333;
-            max-height: 85vh;
-            overflow-y: auto;
+            border: 1px solid rgba(0, 255, 234, 0.3);
+            box-shadow: 0 0 30px rgba(0, 255, 234, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
         }
         
         .header {
-            background: #2563eb;
-            color: white;
+            background: rgba(0, 20, 40, 0.8);
+            color: #00ffea;
             text-align: center;
             padding: 20px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            position: relative;
+            border-bottom: 1px solid rgba(0, 255, 234, 0.3);
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #00ffea;
+        }
+        
+        .logo span {
+            color: #ff00d4;
         }
         
         .header h2 {
+            font-family: 'Orbitron', sans-serif;
             font-weight: 600;
-            font-size: 1.3rem;
-            margin: 0;
+            font-size: 18px;
+            margin: 8px 0 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         
         .form-container {
-            padding: 20px;
+            padding: 25px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        /* Custom scrollbar */
+        .form-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .form-container::-webkit-scrollbar-track {
+            background: rgba(5, 10, 20, 0.8);
+        }
+        
+        .form-container::-webkit-scrollbar-thumb {
+            background: #00ffea;
+            border-radius: 3px;
+        }
+        
+        .form-container::-webkit-scrollbar-thumb:hover {
+            background: #ff00d4;
         }
         
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 18px;
+            position: relative;
         }
         
         .form-group label {
             display: block;
             margin-bottom: 6px;
             font-weight: 500;
-            color: #d0d0d0;
-            font-size: 14px;
+            color: #a0f0eb;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .form-group input {
             width: 100%;
-            padding: 10px;
-            background: #2b2b2b;
-            border: 1px solid #444;
-            border-radius: 6px;
+            padding: 12px;
+            background: rgba(5, 10, 20, 0.8);
+            border: 1px solid rgba(0, 255, 234, 0.5);
+            border-radius: 4px;
             font-size: 14px;
-            color: #e0e0e0;
-            transition: all 0.3s;
+            color: #00ffea;
+            transition: all 0.3s ease;
+            font-family: 'Share Tech Mono', monospace;
         }
         
         .form-group input:focus {
-            border-color: #2563eb;
+            border-color: #ff00d4;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 0 10px rgba(255, 0, 212, 0.5);
+        }
+        
+        .form-group input.error {
+            border-color: #ff3333;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
         }
         
         .errorlist {
-            color: #ef4444;
+            color: #ff3333;
             margin-top: 4px;
             list-style: none;
-            font-size: 12px;
+            font-size: 11px;
+            animation: glitch 0.5s linear;
+        }
+        
+        @keyframes glitch {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-3px); }
+            40% { transform: translateX(3px); }
+            60% { transform: translateX(-3px); }
+            80% { transform: translateX(3px); }
+            100% { transform: translateX(0); }
         }
         
         .help-text {
-            font-size: 12px;
-            color: #a0a0a0;
+            font-size: 11px;
+            color: #60a0a0;
             margin-top: 4px;
         }
         
         .btn {
             width: 100%;
             padding: 12px;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 6px;
+            background: transparent;
+            color: #00ffea;
+            border: 2px solid #00ffea;
+            border-radius: 4px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 10px;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 8px;
         }
         
         .btn:hover {
-            background: #1d4ed8;
+            background: #00ffea;
+            color: #0a0a12;
+            box-shadow: 0 0 20px #00ffea;
+        }
+        
+        .btn:active {
+            transform: translateY(2px);
         }
         
         .link-container {
             text-align: center;
             margin-top: 20px;
             padding-top: 15px;
-            border-top: 1px solid #333;
+            border-top: 1px solid rgba(0, 255, 234, 0.3);
             font-size: 13px;
         }
         
         .link-container a {
-            color: #2563eb;
+            color: #ff00d4;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
+            position: relative;
         }
         
         .link-container a:hover {
-            color: #60a5fa;
-            text-decoration: underline;
+            color: #00ffea;
+            text-shadow: 0 0 5px #00ffea;
+        }
+        
+        .link-container a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ff00d4;
+            transition: width 0.3s ease;
+        }
+        
+        .link-container a:hover::after {
+            width: 100%;
         }
         
         .secret-code-note {
-            background: #2b2b2b;
+            background: rgba(5, 10, 20, 0.8);
             padding: 12px;
-            border-radius: 6px;
+            border-radius: 4px;
             margin-top: 15px;
-            font-size: 12px;
-            color: #a0a0a0;
-            border-left: 3px solid #2563eb;
-        }
-        
-        .password-toggle {
-            position: absolute;
-            right: 12px;
-            top: 34px;
-            cursor: pointer;
-            color: #a0a0a0;
-            font-size: 14px;
+            font-size: 11px;
+            color: #a0f0eb;
+            border-left: 3px solid #ff00d4;
         }
         
         .password-container {
             position: relative;
         }
         
-        .footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 12px;
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 34px;
+            cursor: pointer;
             color: #a0a0a0;
+            transition: color 0.3s;
         }
         
-        /* Custom scrollbar for the container */
-        .container::-webkit-scrollbar {
-            width: 6px;
+        .password-toggle:hover {
+            color: #00ffea;
         }
         
-        .container::-webkit-scrollbar-track {
-            background: #1a1a1a;
+        .hacker-terminal {
+            background: rgba(5, 5, 15, 0.8);
+            border: 1px solid #00ffea;
+            border-radius: 4px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 11px;
+            color: #a0f0eb;
+            max-height: 100px;
+            overflow-y: auto;
         }
         
-        .container::-webkit-scrollbar-thumb {
-            background: #2563eb;
-            border-radius: 3px;
+        .terminal-line {
+            margin-bottom: 4px;
+            display: flex;
         }
         
-        .container::-webkit-scrollbar-thumb:hover {
-            background: #1d4ed8;
+        .terminal-prompt {
+            color: #ff00d4;
+            margin-right: 8px;
         }
         
         @media (max-width: 500px) {
             .container {
-                max-width: 320px;
-                border-radius: 8px;
+                border-radius: 6px;
+                max-width: 380px;
             }
             
             .form-container {
-                padding: 15px;
+                padding: 20px;
             }
             
             .header {
-                padding: 15px;
-            }
-            
-            .logo {
-                font-size: 2.2rem;
-            }
-            
-            .logo-text {
-                font-size: 1.3rem;
+                padding: 20px 15px;
             }
         }
         
@@ -231,98 +314,197 @@
             }
             
             .container {
-                max-width: 340px;
+                max-width: 400px;
             }
             
             .form-container {
-                padding: 15px;
+                padding: 20px;
+                max-height: 65vh;
             }
             
             .form-group {
-                margin-bottom: 12px;
-            }
-            
-            .logo-container {
                 margin-bottom: 15px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="logo-container">
-        <div class="logo">
-            <i class="fas fa-lock"></i>
-        </div>
-        <div class="logo-text">Secret Chat</div>
-    </div>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix"></canvas>
     
-    <div class="container">
-        <div class="header">
-            <h2>Create Your Account</h2>
-        </div>
-        
-        <div class="form-container">
-            <form method="post">
-                {% csrf_token %}
-                
-                <div class="form-group">
-                    <label for="id_username">Username</label>
-                    <input type="text" name="username" id="id_username" required autocomplete="username">
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_email">Email</label>
-                    <input type="email" name="email" id="id_email" required autocomplete="email">
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_phone">Phone</label>
-                    <input type="text" name="phone" id="id_phone" required>
-                </div>
-                
-                <div class="form-group password-container">
-                    <label for="id_password1">Password</label>
-                    <input type="password" name="password1" id="id_password1" required autocomplete="new-password">
-                    <span class="password-toggle" onclick="togglePassword('id_password1')">
-                        <i class="far fa-eye"></i>
-                    </span>
-                </div>
-                
-                <div class="form-group password-container">
-                    <label for="id_password2">Confirm Password</label>
-                    <input type="password" name="password2" id="id_password2" required autocomplete="new-password">
-                    <span class="password-toggle" onclick="togglePassword('id_password2')">
-                        <i class="far fa-eye"></i>
-                    </span>
-                </div>
-                
-                <div class="form-group">
-                    <label for="id_secret_code">Secret Code</label>
-                    <input type="text" name="secret_code" id="id_secret_code" required>
-                    <p class="help-text">Enter the secret code to join.</p>
-                </div>
-                
-                <button type="submit" class="btn">Register</button>
-            </form>
-            
-            <div class="link-container">
-                <p>Already have an account? <a href="{% url 'chat:login' %}">Login here</a>.</p>
+    <div class="register-wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="logo">Nexon<span>Chatx</span></div>
+                <h2>Create Your Account</h2>
             </div>
             
-            <div class="secret-code-note">
-                <p><strong>Note:</strong> You need the correct secret code to register or login to this system.</p>
+            <div class="form-container">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <!-- Display form errors from backend -->
+                    {% if form.errors %}
+                    <div class="hacker-terminal">
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">></span>
+                            <span>SECURITY ALERT: Registration failed</span>
+                        </div>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <div class="terminal-line">
+                                    <span class="terminal-prompt">></span>
+                                    <span>ERROR: {{ error }}</span>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="form-group">
+                        <label for="id_username">Username</label>
+                        <input type="text" name="username" id="id_username" required autocomplete="username" value="{{ form.username.value|default:'' }}">
+                        {% if form.username.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.username.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_email">Email</label>
+                        <input type="email" name="email" id="id_email" required autocomplete="email" value="{{ form.email.value|default:'' }}">
+                        {% if form.email.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.email.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_phone">Phone</label>
+                        <input type="text" name="phone" id="id_phone" required value="{{ form.phone.value|default:'' }}">
+                        {% if form.phone.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.phone.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group password-container">
+                        <label for="id_password1">Password</label>
+                        <input type="password" name="password1" id="id_password1" required autocomplete="new-password">
+                        <span class="password-toggle" onclick="togglePassword('id_password1')">
+                            <i class="far fa-eye"></i>
+                        </span>
+                        {% if form.password1.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.password1.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group password-container">
+                        <label for="id_password2">Confirm Password</label>
+                        <input type="password" name="password2" id="id_password2" required autocomplete="new-password">
+                        <span class="password-toggle" onclick="togglePassword('id_password2')">
+                            <i class="far fa-eye"></i>
+                        </span>
+                        {% if form.password2.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.password2.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_secret_code">Secret Code</label>
+                        <input type="text" name="secret_code" id="id_secret_code" required value="{{ form.secret_code.value|default:'' }}">
+                        <p class="help-text">Enter the secret code to join.</p>
+                        {% if form.secret_code.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.secret_code.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn">Register</button>
+                </form>
+                
+                <div class="link-container">
+                    <p>Already have an account? <a href="{% url 'chat:login' %}">Login here</a></p>
+                </div>
+                
+                <div class="secret-code-note">
+                    <p><strong>Note:</strong> You need the correct secret code to register or login to this system.</p>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="footer">
-        <p>&copy; 2023 Secret Chat. All rights reserved.</p>
     </div>
 
     <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*";
+        const charArray = chars.split('');
+        
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        
+        const drops = [];
+        
+        for(let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 18, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ffea';
+            ctx.font = fontSize + 'px Share Tech Mono';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 35);
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Password toggle function
         function togglePassword(inputId) {
             const passwordInput = document.getElementById(inputId);
-            const toggleIcon = passwordInput.nextElementSibling.querySelector('i');
+            const toggleIcon = passwordInput.parentNode.querySelector('.password-toggle i');
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
@@ -335,18 +517,16 @@
             }
         }
         
-        // Adjust layout to ensure slim design
-        function adjustLayout() {
-            const container = document.querySelector('.container');
-            if (window.innerWidth > 400) {
-                container.style.maxWidth = '360px';
-            } else {
-                container.style.maxWidth = '95%';
-            }
-        }
-        
-        window.addEventListener('load', adjustLayout);
-        window.addEventListener('resize', adjustLayout);
+        // Add error styling to fields with errors
+        document.addEventListener('DOMContentLoaded', function() {
+            const errorInputs = document.querySelectorAll('.errorlist');
+            errorInputs.forEach(errorList => {
+                const input = errorList.previousElementSibling;
+                if (input && input.tagName === 'INPUT') {
+                    input.classList.add('error');
+                }
+            });
+        });
     </script>
 </body>
 </html>
