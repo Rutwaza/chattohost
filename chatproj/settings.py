@@ -30,6 +30,7 @@ ALLOWED_HOSTS = [
     'localhost',       # same machine
     '127.0.0.1',       # loopback
     '172.16.17.167',   # your PC’s LAN IP (or Pi’s IP later)
+    'nexonchatz.onrender.com',  # your Render.com domain
 ]
 
 AUTH_USER_MODEL = 'chat.CustomUser'
