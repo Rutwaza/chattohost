@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from .models import Message
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
 
 def register(request):
     if request.method == "POST":
@@ -30,6 +32,9 @@ def secret_login(request):
     else:
         form = SecretLoginForm()
     return render(request, "chat/login.html", {"form": form})
+
+def landing_page(request):
+    return render(request, 'chat/landing.html')
 
 def logout_view(request):
     logout(request)

@@ -24,13 +24,11 @@ SECRET_KEY = 'django-insecure-zm!k072sbd8+0uufc)-i$2j7u^uhox4!2a5_v2l9-8$p(xf+qd
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
-ALLOWED_HOSTS = [
-    'localhost',       # same machine
-    '127.0.0.1',       # loopback
-    '172.16.17.167',   # your PC’s LAN IP (or Pi’s IP later)
-    'nexonchatz.onrender.com',  # your Render.com domain
+CSRF_TRUSTED_ORIGINS = [
+    'https://nexonchatz.onrender.com',
+    'http://localhost:8000'
 ]
 
 AUTH_USER_MODEL = 'chat.CustomUser'
