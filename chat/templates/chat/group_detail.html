@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoChat - {{ group.name }}</title>
+    <style>
+        /* Dark Theme Variables - Dark Universe with Stars */
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: rgba(20, 20, 30, 0.95);
+            --bg-tertiary: rgba(30, 30, 45, 0.95);
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666677;
+            --accent: #4a9cff;
+            --accent-hover: #3a8cef;
+            --accent-secondary: #00d4aa;
+            --danger: #ff4a4a;
+            --success: #00d47a;
+            --border: rgba(51, 51, 70, 0.6);
+            --border-light: rgba(68, 68, 90, 0.8);
+            --shadow: rgba(0, 0, 0, 0.6);
+            --star-glow: rgba(255, 255, 255, 0.9);
+            --moon-glow: rgba(255, 255, 240, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0f 0%, #151520 50%, #0a0a0f 100%);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Dark Universe Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 10% 20%, rgba(10, 10, 15, 0.9) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 80%, rgba(15, 15, 25, 0.9) 0%, transparent 50%);
+            z-index: -3;
+        }
+
+        /* Stars Layer */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 50px 100px, var(--star-glow), transparent),
+                radial-gradient(1px 1px at 150px 200px, var(--star-glow), transparent),
+                radial-gradient(2px 2px at 250px 300px, var(--star-glow), transparent),
+                radial-gradient(1px 1px at 350px 150px, var(--star-glow), transparent),
+                radial-gradient(1px 1px at 450px 400px, var(--star-glow), transparent),
+                radial-gradient(2px 2px at 550px 250px, var(--star-glow), transparent),
+                radial-gradient(1px 1px at 650px 350px, var(--star-glow), transparent),
+                radial-gradient(2px 2px at 750px 100px, var(--star-glow), transparent),
+                radial-gradient(1px 1px at 850px 450px, var(--star-glow), transparent),
+                radial-gradient(2px 2px at 950px 200px, var(--star-glow), transparent),
+                radial-gradient(1px 1px at 150px 500px, var(--star-glow), transparent),
+                radial-gradient(2px 2px at 300px 50px, var(--star-glow), transparent),
+                radial-gradient(1px 1px at 500px 300px, var(--star-glow), transparent),
+                radial-gradient(2px 2px at 700px 150px, var(--star-glow), transparent),
+                radial-gradient(1px 1px at 900px 400px, var(--star-glow), transparent);
+            background-repeat: repeat;
+            background-size: 1000px 1000px;
+            animation: twinkle 6s ease-in-out infinite;
+            z-index: -2;
+        }
+
+        /* Moon */
+        .moon {
+            position: fixed;
+            top: 20%;
+            right: 10%;
+            width: 80px;
+            height: 80px;
+            background: #f0f0f0;
+            border-radius: 50%;
+            box-shadow: 
+                0 0 40px var(--moon-glow),
+                0 0 80px rgba(255, 255, 240, 0.3);
+            z-index: -1;
+            animation: moonOrbit 60s linear infinite;
+        }
+
+        .moon::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 20px;
+            height: 20px;
+            background: #d0d0d0;
+            border-radius: 50%;
+            box-shadow: 
+                30px 10px 0 -5px #d0d0d0,
+                10px 30px 0 -3px #d0d0d0,
+                40px 30px 0 -7px #d0d0d0;
+        }
+
+        @keyframes moonOrbit {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(-100px, 50px) rotate(90deg);
+            }
+            50% {
+                transform: translate(-200px, 0) rotate(180deg);
+            }
+            75% {
+                transform: translate(-100px, -50px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Shooting Stars */
+        .shooting-star {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 6px 1px white;
+            opacity: 0;
+            z-index: -1;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        /* Layout */
+        .chat-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .group-info h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: var(--accent-secondary);
+            font-weight: 600;
+        }
+
+        .group-meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 156, 255, 0.3);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+        }
+
+        /* Chat Box */
+        #chat-box {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Message Styles */
+        .chat-message {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .chat-message:hover {
+            border-color: var(--border-light);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .chat-message.pinned {
+            border-left: 4px solid var(--accent-secondary);
+            background: linear-gradient(90deg, rgba(0, 212, 170, 0.1) 0%, var(--bg-tertiary) 100%);
+        }
+
+        .meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .meta b {
+            color: var(--accent);
+        }
+
+        .ts {
+            color: var(--text-muted);
+        }
+
+        .seen-count {
+            margin-left: auto;
+            background: rgba(160, 160, 160, 0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            border: 1px solid var(--border);
+        }
+
+        .pin-badge {
+            background: var(--accent-secondary);
+            color: black;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .reply-preview {
+            background: rgba(74, 156, 255, 0.1);
+            border-left: 3px solid var(--accent);
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .content {
+            margin-bottom: 10px;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .img {
+            margin: 10px 0;
+        }
+
+        .img img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease;
+        }
+
+        .img img:hover {
+            transform: scale(1.02);
+        }
+
+        .audio {
+            margin: 10px 0;
+        }
+
+        .audio audio {
+            width: 100%;
+            height: 40px;
+            border-radius: 20px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .actions button, .actions a {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .actions button:hover, .actions a:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        /* Typing Indicator */
+        #typing-indicator {
+            padding: 10px 20px;
+            font-style: italic;
+            color: var(--text-muted);
+            min-height: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Message Form */
+        #chat-form {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            align-items: flex-end;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        #message-input {
+            flex: 1;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            resize: none;
+            min-height: 44px;
+            max-height: 120px;
+            transition: all 0.3s ease;
+        }
+
+        #message-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(74, 156, 255, 0.2);
+        }
+
+        #message-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        #image-input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            min-width: 44px;
+            height: 44px;
+        }
+
+        .file-input-label:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .emoji-trigger, #record-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .emoji-trigger:hover, #record-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        #chat-form button[type="submit"] {
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            height: 44px;
+        }
+
+        #chat-form button[type="submit"]:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 156, 255, 0.3);
+        }
+
+        /* Footer */
+        .chat-footer {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .chat-container {
+                padding: 10px;
+                height: 100vh;
+            }
+            
+            .chat-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            #chat-form {
+                flex-wrap: wrap;
+            }
+            
+            #message-input {
+                min-width: 100%;
+                order: 1;
+            }
+            
+            .form-actions {
+                order: 2;
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 10px;
+            }
+            
+            .moon {
+                width: 60px;
+                height: 60px;
+                right: 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="stars"></div>
+    <div class="moon"></div>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="group-info">
+                <h1>{{ group.name }}</h1>
+                <div class="group-meta">
+                    <a href="{% url 'chat:group_members' group.id %}">👥 Members</a>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="{% url 'chat:index' %}" class="btn">← Back to Groups</a>
+            </div>
+        </div>
+
+        <div id="chat-box">
+            <ul id="messages">
+                <!-- Server-rendered messages -->
+                {% for message in messages %}
+                  <li id="message-{{ message.id }}" data-id="{{ message.id }}"
+                      class="chat-message {% if message.pinned %}pinned{% endif %}">
+
+                    <!-- Top meta row -->
+                    <div class="meta">
+                      <b>{{ message.user.username }}</b>
+                      <small class="ts">{{ message.created_at|date:"H:i" }}</small>
+                      <span class="seen-count">Seen: {{ message.seen_by.count }}</span>
+                      {% if message.pinned %}
+                        <span class="pin-badge">📌 Pinned</span>
+                      {% endif %}
+                    </div>
+
+                    <!-- Reply preview -->
+                    {% if message.reply_to %}
+                    <div class="reply-preview">
+                      ↪️ Reply to: {{ message.reply_to.content|truncatechars:50 }}
+                    </div>
+                    {% endif %}
+
+                    <!-- Message text / image -->
+                    <div class="content">{{ message.content|linebreaksbr }}</div>
+                    {% if message.image %}
+                      <div class="img">
+                        <img src="{{ message.image.url }}" style="max-width:200px">
+                      </div>
+                    {% endif %}
+
+                    <!-- Action buttons -->
+                    <div class="actions">
+                      <button class="reply-btn" data-id="{{ message.id }}">Reply</button>
+
+                      {% if request.user.id == message.user.id or request.user == group.admin %}
+                        <button class="delete-btn" data-id="{{ message.id }}">Delete</button>
+                      {% endif %}
+
+                      {% if request.user == group.admin %}
+                        <a class="pin-btn" href="{% url 'chat:toggle_pin' message.id %}">
+                            {% if message.pinned %}Unpin{% else %}Pin{% endif %}
+                        </a>
+                      {% endif %}
+                      
+                    </div>
+                  </li>
+                {% endfor %}
+            </ul>
+            <p id="typing-indicator"></p>
+        </div>
+
+        <form id="chat-form" enctype="multipart/form-data">
+            <input type="text" id="message-input" autocomplete="off" placeholder="Type a message...">
+            
+            <div class="form-actions">
+                <div class="file-input-wrapper">
+                    <input type="file" id="image-input" accept="image/*">
+                    <label for="image-input" class="file-input-label" title="Attach image">📷</label>
+                </div>
+                
+                <input type="hidden" id="reply-to-id" value="">
+                
+                <button type="button" id="emoji-btn" class="emoji-trigger" title="Insert emoji">😊</button>
+                <button type="button" id="record-btn" title="Record audio">🎤</button>
+                
+                <button type="submit">Send</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/index.js"></script>
+
+    <script>
+        const emojiBtn = document.getElementById('emoji-btn');
+        const picker = new EmojiButton();
+        emojiBtn.addEventListener('click', () => picker.togglePicker(emojiBtn));
+        picker.on('emoji', emoji => {
+            inputField.value += emoji;
+        });
+
+        // Create shooting stars
+        function createShootingStar() {
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = '-10px';
+            document.body.appendChild(star);
+
+            const animation = star.animate([
+                { transform: 'translateY(0) translateX(0)', opacity: 1 },
+                { transform: `translateY(${window.innerHeight + 100}px) translateX(${Math.random() * 200 - 100}px)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 2000 + 1000,
+                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            });
+
+            animation.onfinish = () => star.remove();
+        }
+
+        // Create shooting stars periodically
+        setInterval(createShootingStar, 5000);
+        // Create some initial stars
+        for (let i = 0; i < 2; i++) {
+            setTimeout(createShootingStar, i * 2000);
+        }
+    </script>
+
+    <script>
+        // Your existing JavaScript remains exactly the same
+        const groupId = "{{ group.id }}";
+        const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+        const chatSocket = new WebSocket(`${wsScheme}://${window.location.host}/ws/group/${groupId}/`);
+
+        const messagesList = document.getElementById('messages');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const inputField = document.getElementById('message-input');
+        const imageInput = document.getElementById('image-input');
+        const replyInput = document.getElementById('reply-to-id');
+
+        // ---- Audio recording ----
+        let mediaRecorder;
+        let audioChunks = [];
+
+        const recordBtn = document.getElementById('record-btn');
+
+        recordBtn.onclick = async () => {
+          if (!mediaRecorder || mediaRecorder.state === "inactive") {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+              const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                chatSocket.send(JSON.stringify({
+                  type: "audio",
+                  audio: reader.result
+                }));
+              };
+              reader.readAsDataURL(audioBlob);
+            };
+
+            mediaRecorder.start();
+            recordBtn.textContent = "⏹ Stop";
+          } else if (mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
+            recordBtn.textContent = "🎤 Record";
+          }
+        };
+
+        // ✅ Helper – safely send after socket is OPEN
+        function wsSend(data) {
+            if (chatSocket.readyState === WebSocket.OPEN) {
+                chatSocket.send(JSON.stringify(data));
+            } else {
+                chatSocket.addEventListener('open', () => chatSocket.send(JSON.stringify(data)), { once:true });
+            }
+        }
+
+        // ✅ Mark all current messages as seen
+        function sendSeen() {
+            const last = messagesList.lastElementChild;
+            if (last) {
+                wsSend({ type: 'seen', last_seen_id: parseInt(last.dataset.id) });
+            }
+        }
+
+        // ---- Typing indicator ----
+        let lastTypingSent = 0;
+        inputField.addEventListener('input', () => {
+            const now = Date.now();
+            if (now - lastTypingSent > 1000) {
+                wsSend({ type: 'typing' });
+                lastTypingSent = now;
+            }
+        });
+
+        // ---- Reply & Delete (initial list) ----
+        document.querySelectorAll('.reply-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                replyInput.value = btn.dataset.id;
+                inputField.placeholder = "Replying to message #" + btn.dataset.id;
+                inputField.focus();
+            });
+        });
+        
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.id;
+                if (!confirm('Delete this message?')) return;
+                wsSend({ type: 'delete', message_id: id });
+            });
+        });
+
+        // ---- Incoming WebSocket events ----
+        chatSocket.onmessage = e => {
+            const data = JSON.parse(e.data);
+            console.log('WS:', data);
+
+            if (data.type === 'message') {
+                renderMessage(data.message);
+                sendSeen();                       // ✅ mark new messages immediately
+            }
+            else if (data.type === 'message_deleted') {
+                const el = document.getElementById(`message-${data.message_id}`);
+                if (el) el.remove();
+            }
+            else if (data.type === 'seen_update') {
+                for (const upd of data.updates) {
+                    const el = document.getElementById(`message-${upd.id}`);
+                    if (el) {
+                        const sc = el.querySelector('.seen-count');
+                        if (sc) sc.textContent = `Seen: ${upd.seen_count}`;
+                    }
+                }
+            }
+            else if (data.type === 'typing') {
+                typingIndicator.innerText = `${data.user} is typing...`;
+                setTimeout(()=> typingIndicator.innerText='', 1500);
+            }
+            else if (data.type === 'pinned_updated') {
+                const el = document.getElementById(`message-${data.message_id}`);
+                if (el) {
+                    el.classList.toggle('pinned', data.pinned);
+                    const pinBadge = el.querySelector('.pin-badge');
+                    const pinBtn = el.querySelector('.pin-btn');
+                    
+                    if (pinBadge) {
+                        if (data.pinned) {
+                            pinBadge.textContent = "📌 Pinned";
+                            pinBadge.style.display = "inline-block";
+                        } else {
+                            pinBadge.style.display = "none";
+                        }
+                    }
+                    if (pinBtn) {
+                        pinBtn.textContent = data.pinned ? "Unpin" : "Pin";
+                        pinBtn.href = "{% url 'chat:toggle_pin' 0 %}".replace('0', data.message_id);
+                    }
+                }
+            }
+        };
+
+        // ✅ After socket opens, send first seen packet
+        chatSocket.addEventListener('open', sendSeen);
+
+        // ✅ Also fire on scroll to bottom (user just viewed more messages)
+        messagesList.addEventListener('scroll', () => {
+            if (messagesList.scrollTop + messagesList.clientHeight >= messagesList.scrollHeight - 5) {
+                sendSeen();
+            }
+        });
+
+        // ---- Send message ----
+        document.getElementById('chat-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const text = inputField.value.trim();
+            const file = imageInput.files[0];
+            const reply_to = replyInput.value || null;
+            if (!text && !file) return;
+
+            const payload = { type:'message', message:text, reply_to };
+            if (file) {
+                const dataUri = await new Promise((res, rej) => {
+                    const r = new FileReader();
+                    r.onload = () => res(r.result);
+                    r.onerror = rej;
+                    r.readAsDataURL(file);
+                });
+                payload.image = dataUri;
+            }
+            wsSend(payload);
+
+            // reset UI
+            inputField.value = '';
+            imageInput.value = null;
+            replyInput.value = '';
+            inputField.placeholder = 'Type a message...';
+        });
+
+        function renderMessage(m) {
+            const li = document.createElement('li');
+            li.id = `message-${m.id}`;
+            li.dataset.id = m.id;
+            li.className = `chat-message ${m.pinned ? 'pinned' : ''}`;
+
+            // Check if current user is admin for pin functionality
+            const isAdmin = "{{ request.user.id }}" == "{{ group.admin.id }}";
+            
+            li.innerHTML = `
+                <div class="meta">
+                    <b>${m.user}</b>
+                    <small class="ts">${m.timestamp ? m.timestamp.split(' ')[1].slice(0,5) : '00:00'}</small>
+                    <span class="seen-count">Seen: ${m.seen_count || 0}</span>
+                    ${m.pinned ? '<span class="pin-badge">📌 Pinned</span>' : ''}
+                </div>
+
+                ${m.reply_to ? `<div class="reply-preview">
+                    ↪️ Reply to: ${escapeHtml(m.reply_text || '')}
+                </div>` : ''}
+
+                ${m.content ? `<div class="content">${escapeHtml(m.content)}</div>` : ''}
+
+                ${m.image_url ? `<div class="img">
+                    <img src="${m.image_url}" style="max-width:200px">
+                </div>` : ''}
+
+                ${m.audio_url ? `<div class="audio">
+                    <audio controls preload="none">
+                        <source src="${m.audio_url}" type="audio/webm">
+                        Your browser does not support audio playback.
+                    </audio>
+                </div>` : ''}
+
+                <div class="actions">
+                    <button class="reply-btn" data-id="${m.id}">reply</button>
+                    ${m.user === "{{ request.user.username }}" || "{{ request.user.id }}" == "{{ group.admin.id }}"
+                       ? `<button class="delete-btn" data-id="${m.id}">Delete</button>` : ''}
+                    ${isAdmin ? 
+                       `<a class="pin-btn" href="{% url 'chat:toggle_pin' 0 %}" data-id="${m.id}">
+                            ${m.pinned ? 'Unpin' : 'Pin'}
+                        </a>` : ''}
+                </div>
+            `;
+
+            // Fix the pin button href
+            const pinBtn = li.querySelector('.pin-btn');
+            if (pinBtn) {
+                pinBtn.href = pinBtn.href.replace('0', m.id);
+            }
+
+            messagesList.appendChild(li);
+            messagesList.scrollTop = messagesList.scrollHeight;
+
+            // Event bindings for the new message
+            li.querySelector('.reply-btn').addEventListener('click', () => {
+                replyInput.value = m.id;
+                inputField.placeholder = `Replying to #${m.id}`;
+                inputField.focus();
+            });
+            
+            const delBtn = li.querySelector('.delete-btn');
+            if (delBtn) delBtn.addEventListener('click', () => {
+                if (!confirm('Delete this message?')) return;
+                wsSend({ type: 'delete', message_id: m.id });
+            });
+        }
+
+        // ---- Escape helper ----
+        function escapeHtml(str) {
+            return str ? str.replace(/[&<"'>]/g, m => ({
+                '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+            }[m])) : '';
+        }
+    </script>
+</body>
+</html>

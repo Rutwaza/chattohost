@@ -33,10 +33,12 @@ CSRF_TRUSTED_ORIGINS = [
 
 AUTH_USER_MODEL = 'chat.CustomUser'
 
-SECRET_CHAT_CODE = "UltraSecret123"  # 🔒 the secret code everyone must know
+SECRET_CHAT_CODE = "COSMIC-CHATX-0806"  # 🔒 the secret code everyone must know
 
-ASGI_APPLICATION = 'chatproj.asgi.application'
+ASGI_APPLICATION = "chatproj.asgi.application"
 
+LOGIN_URL = '/login/'   # or '/login' depending on your urls.py
+LOGIN_REDIRECT_URL = '/'
 
 # Application definition
 
@@ -78,6 +80,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],   # <— this allows chattohost/templates/
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,9 +140,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-#STATIC_URL = 'static/'
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'static'
+#STATICFILES_DIRS = [BASE_DIR / "static"]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

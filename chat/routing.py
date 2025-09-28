@@ -3,6 +3,5 @@ from django.urls import re_path
 from . import consumers
 
 websocket_urlpatterns = [
-    re_path(r"^ws/chat/?$", consumers.ChatConsumer.as_asgi()),
+    re_path(r'ws/group/(?P<group_id>\d+)/$', consumers.GroupChatConsumer.as_asgi()),
 ]
-# This file defines WebSocket routing for the chat application.

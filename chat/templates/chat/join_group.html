@@ -1,0 +1,541 @@
+{% block content %}
+<style>
+    /* Dark Universe Theme for Join Group Page */
+    :root {
+        --bg-primary: #0a0a0f;
+        --bg-secondary: rgba(20, 20, 30, 0.95);
+        --bg-tertiary: rgba(30, 30, 45, 0.95);
+        --text-primary: #e0e0e0;
+        --text-secondary: #a0a0a0;
+        --text-muted: #666677;
+        --accent: #4a9cff;
+        --accent-hover: #3a8cef;
+        --accent-secondary: #00d4aa;
+        --danger: #ff4a4a;
+        --success: #00d47a;
+        --border: rgba(51, 51, 70, 0.6);
+        --border-light: rgba(68, 68, 90, 0.8);
+        --shadow: rgba(0, 0, 0, 0.6);
+        --star-glow: rgba(255, 255, 255, 0.9);
+        --moon-glow: rgba(255, 255, 240, 0.8);
+    }
+
+    body {
+        background: linear-gradient(135deg, #0a0a0f 0%, #151520 50%, #0a0a0f 100%);
+        color: var(--text-primary);
+        line-height: 1.5;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* Stars Layer */
+    .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            radial-gradient(1px 1px at 50px 100px, var(--star-glow), transparent),
+            radial-gradient(1px 1px at 150px 200px, var(--star-glow), transparent),
+            radial-gradient(2px 2px at 250px 300px, var(--star-glow), transparent),
+            radial-gradient(1px 1px at 350px 150px, var(--star-glow), transparent),
+            radial-gradient(1px 1px at 450px 400px, var(--star-glow), transparent),
+            radial-gradient(2px 2px at 550px 250px, var(--star-glow), transparent),
+            radial-gradient(1px 1px at 650px 350px, var(--star-glow), transparent),
+            radial-gradient(2px 2px at 750px 100px, var(--star-glow), transparent),
+            radial-gradient(1px 1px at 850px 450px, var(--star-glow), transparent),
+            radial-gradient(2px 2px at 950px 200px, var(--star-glow), transparent);
+        background-repeat: repeat;
+        background-size: 1000px 1000px;
+        animation: twinkle 6s ease-in-out infinite;
+        z-index: -2;
+    }
+
+    /* Moon */
+    .moon {
+        position: fixed;
+        top: 20%;
+        right: 10%;
+        width: 80px;
+        height: 80px;
+        background: #f0f0f0;
+        border-radius: 50%;
+        box-shadow: 
+            0 0 40px var(--moon-glow),
+            0 0 80px rgba(255, 255, 240, 0.3);
+        z-index: -1;
+        animation: moonOrbit 60s linear infinite;
+    }
+
+    .moon::before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 20px;
+        height: 20px;
+        background: #d0d0d0;
+        border-radius: 50%;
+        box-shadow: 
+            30px 10px 0 -5px #d0d0d0,
+            10px 30px 0 -3px #d0d0d0,
+            40px 30px 0 -7px #d0d0d0;
+    }
+
+    @keyframes moonOrbit {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        25% { transform: translate(-100px, 50px) rotate(90deg); }
+        50% { transform: translate(-200px, 0) rotate(180deg); }
+        75% { transform: translate(-100px, -50px) rotate(270deg); }
+        100% { transform: translate(0, 0) rotate(360deg); }
+    }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 1; }
+    }
+
+    .join-group-container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .join-group-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 30px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .join-group-header h1 {
+        font-size: 2.5rem;
+        color: var(--accent-secondary);
+        margin-bottom: 15px;
+        font-weight: 600;
+        text-shadow: 0 0 20px rgba(0, 212, 170, 0.3);
+    }
+
+    .join-group-subtitle {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    .join-group-form {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 40px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 30px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 15px;
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .secret-key-input {
+        position: relative;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 18px 60px;
+        background: var(--bg-tertiary);
+        border: 2px solid var(--border);
+        border-radius: 16px;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 2px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+        text-align: center;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 30px rgba(74, 156, 255, 0.4);
+        transform: translateY(-3px);
+    }
+
+    .form-input::placeholder {
+        color: var(--text-muted);
+        letter-spacing: normal;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.5rem;
+        color: var(--accent);
+    }
+
+    .btn {
+        display: inline-block;
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 18px 40px;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-decoration: none;
+        text-align: center;
+        min-width: 200px;
+        margin: 10px;
+    }
+
+    .btn:hover {
+        background: var(--accent-hover);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(74, 156, 255, 0.4);
+        text-decoration: none;
+    }
+
+    .btn-join {
+        background: var(--accent-secondary);
+        color: black;
+        font-size: 1.3rem;
+        padding: 20px 50px;
+    }
+
+    .btn-join:hover {
+        background: #00c49a;
+        box-shadow: 0 8px 25px rgba(0, 212, 170, 0.4);
+    }
+
+    .btn-back {
+        background: transparent;
+        border: 2px solid var(--border);
+        color: var(--text-secondary);
+        margin-top: 20px;
+    }
+
+    .btn-back:hover {
+        background: var(--bg-tertiary);
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+
+    .join-instructions {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 30px;
+        margin-top: 30px;
+        text-align: left;
+    }
+
+    .join-instructions h3 {
+        color: var(--accent-secondary);
+        margin-bottom: 20px;
+        font-size: 1.3rem;
+        text-align: center;
+    }
+
+    .instructions-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .instructions-list li {
+        padding: 12px 0;
+        color: var(--text-secondary);
+        position: relative;
+        padding-left: 40px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .instructions-list li:last-child {
+        border-bottom: none;
+    }
+
+    .instructions-list li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 24px;
+        height: 24px;
+        background: var(--accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: white;
+    }
+
+    .instructions-list li:nth-child(1)::before { content: '1'; }
+    .instructions-list li:nth-child(2)::before { content: '2'; }
+    .instructions-list li:nth-child(3)::before { content: '3'; }
+
+    .key-visual {
+        text-align: center;
+        margin: 25px 0;
+        padding: 20px;
+        background: rgba(74, 156, 255, 0.1);
+        border: 1px solid var(--accent);
+        border-radius: 12px;
+    }
+
+    .key-example {
+        font-family: 'Courier New', monospace;
+        font-size: 1.2rem;
+        color: var(--accent-secondary);
+        letter-spacing: 3px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        margin: 10px 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .join-group-container {
+            padding: 20px 15px;
+        }
+        
+        .join-group-header h1 {
+            font-size: 2rem;
+        }
+        
+        .join-group-form {
+            padding: 25px;
+        }
+        
+        .form-input {
+            padding: 15px 50px;
+            font-size: 1rem;
+        }
+        
+        .moon {
+            width: 60px;
+            height: 60px;
+            right: 5%;
+        }
+        
+        .btn {
+            min-width: 150px;
+            padding: 15px 30px;
+        }
+        
+        .btn-join {
+            font-size: 1.1rem;
+            padding: 18px 40px;
+        }
+    }
+
+    /* Shooting Stars */
+    .shooting-star {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 2px;
+        height: 2px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 0 6px 1px white;
+        opacity: 0;
+        z-index: -1;
+    }
+
+    /* Success message styling */
+    .success-message {
+        background: rgba(0, 212, 122, 0.1);
+        border: 1px solid var(--success);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 20px 0;
+        text-align: center;
+        color: var(--success);
+    }
+</style>
+
+<!-- Background Elements -->
+<div class="stars"></div>
+<div class="moon"></div>
+
+<div class="join-group-container">
+    <div class="join-group-header">
+        <h1>🔑 Join Cosmic Group</h1>
+        <p class="join-group-subtitle">
+            Enter the secret key to join an existing group and start exploring the universe with friends!
+        </p>
+    </div>
+
+    <form method="post" class="join-group-form">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label class="form-label">Enter Secret Access Key</label>
+            
+            <div class="secret-key-input">
+                <div class="input-icon">🔐</div>
+                <input type="text" 
+                       name="secret_key" 
+                       placeholder="Paste or type the secret key here..." 
+                       class="form-input"
+                       required
+                       maxlength="30"
+                       autocomplete="off"
+                       autocapitalize="off"
+                       autocorrect="off">
+            </div>
+            
+            <div class="key-visual">
+                <div style="color: var(--text-muted); margin-bottom: 10px;">
+                    🔍 Key should look something like:
+                </div>
+                <div class="key-example">0806-COSMIC</div>
+                <div style="color: var(--text-muted); font-size: 0.9rem;">
+                    (Ask the group admin for the exact key)
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-join">
+            🚀 Join Group
+        </button>
+
+        <a href="{% url 'chat:index' %}" class="btn btn-back">
+            ← Back to Groups
+        </a>
+    </form>
+
+    <div class="join-instructions">
+        <h3>📖 How to Join a Group</h3>
+        <ul class="instructions-list">
+            <li>
+                <strong>Get the Secret Key</strong><br>
+                Contact the group administrator and ask for the secret access key
+            </li>
+            <li>
+                <strong>Enter the Key</strong><br>
+                Type or paste the exact key in the field above (case-sensitive)
+            </li>
+            <li>
+                <strong>Start Chatting</strong><br>
+                Click "Join Group" to enter the cosmic conversation!
+            </li>
+        </ul>
+        
+        <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
+            <p style="color: var(--text-muted); margin-bottom: 15px;">
+                Don't have a group key?
+            </p>
+            <a href="{% url 'chat:create_group' %}" 
+               style="color: var(--accent-secondary); text-decoration: none; font-weight: 600;">
+               🪐 Create Your Own Group Instead
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Shooting stars for consistency
+    function createShootingStar() {
+        const star = document.createElement('div');
+        star.className = 'shooting-star';
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = '-10px';
+        document.body.appendChild(star);
+
+        const animation = star.animate([
+            { transform: 'translateY(0) translateX(0)', opacity: 1 },
+            { transform: `translateY(${window.innerHeight + 100}px) translateX(${Math.random() * 200 - 100}px)`, opacity: 0 }
+        ], {
+            duration: Math.random() * 2000 + 1000,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        });
+
+        animation.onfinish = () => star.remove();
+    }
+
+    // Create shooting stars periodically
+    setInterval(createShootingStar, 5000);
+    
+    // Create some initial stars
+    for (let i = 0; i < 2; i++) {
+        setTimeout(createShootingStar, i * 2000);
+    }
+
+    // Add interactive effects
+    document.addEventListener('DOMContentLoaded', function() {
+        const keyInput = document.querySelector('input[name="secret_key"]');
+        
+        // Add paste event for better UX
+        keyInput.addEventListener('paste', function(e) {
+            setTimeout(() => {
+                this.style.background = 'rgba(0, 212, 170, 0.1)';
+                this.style.borderColor = 'var(--accent-secondary)';
+                
+                setTimeout(() => {
+                    this.style.background = '';
+                    this.style.borderColor = '';
+                }, 1000);
+            }, 100);
+        });
+        
+        // Add input formatting
+        keyInput.addEventListener('input', function() {
+            // Remove any spaces and convert to uppercase
+            this.value = this.value.replace(/\s+/g, '').toUpperCase();
+            
+            // Add visual feedback for valid/invalid length
+            if (this.value.length >= 5) {
+                this.style.borderColor = 'var(--success)';
+                this.style.boxShadow = '0 0 20px rgba(0, 212, 122, 0.3)';
+            } else if (this.value.length > 0) {
+                this.style.borderColor = 'var(--danger)';
+                this.style.boxShadow = '0 0 20px rgba(255, 74, 74, 0.3)';
+            } else {
+                this.style.borderColor = '';
+                this.style.boxShadow = '';
+            }
+        });
+        
+        // Focus the input on page load
+        keyInput.focus();
+        
+        // Add keyboard shortcut for quick submission
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && keyInput.value.trim().length >= 3) {
+                keyInput.form.querySelector('.btn-join').click();
+            }
+        });
+    });
+</script>
+{% endblock %}

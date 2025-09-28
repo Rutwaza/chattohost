@@ -1,0 +1,442 @@
+
+{% block content %}
+<style>
+    /* Dark Universe Theme for Members Page */
+    :root {
+        --bg-primary: #0a0a0f;
+        --bg-secondary: rgba(20, 20, 30, 0.95);
+        --bg-tertiary: rgba(30, 30, 45, 0.95);
+        --text-primary: #e0e0e0;
+        --text-secondary: #a0a0a0;
+        --text-muted: #666677;
+        --accent: #4a9cff;
+        --accent-hover: #3a8cef;
+        --accent-secondary: #00d4aa;
+        --danger: #ff4a4a;
+        --success: #00d47a;
+        --border: rgba(51, 51, 70, 0.6);
+        --border-light: rgba(68, 68, 90, 0.8);
+        --shadow: rgba(0, 0, 0, 0.6);
+        --star-glow: rgba(255, 255, 255, 0.9);
+        --moon-glow: rgba(255, 255, 240, 0.8);
+    }
+
+    body {
+        background: linear-gradient(135deg, #0a0a0f 0%, #151520 50%, #0a0a0f 100%);
+        color: var(--text-primary);
+        line-height: 1.5;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* Stars Layer */
+    .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            radial-gradient(1px 1px at 50px 100px, var(--star-glow), transparent),
+            radial-gradient(1px 1px at 150px 200px, var(--star-glow), transparent),
+            radial-gradient(2px 2px at 250px 300px, var(--star-glow), transparent),
+            radial-gradient(1px 1px at 350px 150px, var(--star-glow), transparent),
+            radial-gradient(1px 1px at 450px 400px, var(--star-glow), transparent),
+            radial-gradient(2px 2px at 550px 250px, var(--star-glow), transparent),
+            radial-gradient(1px 1px at 650px 350px, var(--star-glow), transparent),
+            radial-gradient(2px 2px at 750px 100px, var(--star-glow), transparent),
+            radial-gradient(1px 1px at 850px 450px, var(--star-glow), transparent),
+            radial-gradient(2px 2px at 950px 200px, var(--star-glow), transparent);
+        background-repeat: repeat;
+        background-size: 1000px 1000px;
+        animation: twinkle 6s ease-in-out infinite;
+        z-index: -2;
+    }
+
+    /* Moon */
+    .moon {
+        position: fixed;
+        top: 20%;
+        right: 10%;
+        width: 80px;
+        height: 80px;
+        background: #f0f0f0;
+        border-radius: 50%;
+        box-shadow: 
+            0 0 40px var(--moon-glow),
+            0 0 80px rgba(255, 255, 240, 0.3);
+        z-index: -1;
+        animation: moonOrbit 60s linear infinite;
+    }
+
+    .moon::before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 20px;
+        height: 20px;
+        background: #d0d0d0;
+        border-radius: 50%;
+        box-shadow: 
+            30px 10px 0 -5px #d0d0d0,
+            10px 30px 0 -3px #d0d0d0,
+            40px 30px 0 -7px #d0d0d0;
+    }
+
+    @keyframes moonOrbit {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        25% { transform: translate(-100px, 50px) rotate(90deg); }
+        50% { transform: translate(-200px, 0) rotate(180deg); }
+        75% { transform: translate(-100px, -50px) rotate(270deg); }
+        100% { transform: translate(0, 0) rotate(360deg); }
+    }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 1; }
+    }
+
+    .members-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .members-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 30px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .members-header h2 {
+        font-size: 2.5rem;
+        color: var(--accent-secondary);
+        margin-bottom: 10px;
+        font-weight: 600;
+        text-shadow: 0 0 20px rgba(0, 212, 170, 0.3);
+    }
+
+    .group-name {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        font-style: italic;
+    }
+
+    .members-list {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .members-list h3 {
+        color: var(--accent);
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 10px;
+    }
+
+    .member-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        margin-bottom: 12px;
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .member-item:hover {
+        border-color: var(--border-light);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .member-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .member-username {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+    }
+
+    .member-role {
+        background: var(--accent-secondary);
+        color: black;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .member-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .btn {
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        text-decoration: none;
+        backdrop-filter: blur(5px);
+    }
+
+    .btn:hover {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(74, 156, 255, 0.3);
+        text-decoration: none;
+    }
+
+    .btn-danger {
+        background: rgba(255, 74, 74, 0.1);
+        border-color: var(--danger);
+        color: var(--danger);
+    }
+
+    .btn-danger:hover {
+        background: var(--danger);
+        color: white;
+        box-shadow: 0 5px 15px rgba(255, 74, 74, 0.3);
+    }
+
+    .btn-secondary {
+        background: rgba(0, 212, 170, 0.1);
+        border-color: var(--accent-secondary);
+        color: var(--accent-secondary);
+    }
+
+    .btn-secondary:hover {
+        background: var(--accent-secondary);
+        color: black;
+        box-shadow: 0 5px 15px rgba(0, 212, 170, 0.3);
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    .admin-actions {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 25px;
+        margin-top: 30px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        text-align: center;
+    }
+
+    .admin-actions h3 {
+        color: var(--accent);
+        margin-bottom: 20px;
+        font-size: 1.3rem;
+    }
+
+    .danger-zone {
+        background: rgba(255, 74, 74, 0.05);
+        border: 1px solid var(--danger);
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .danger-zone h4 {
+        color: var(--danger);
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-muted);
+        font-style: italic;
+    }
+
+    .member-count {
+        background: rgba(74, 156, 255, 0.1);
+        border: 1px solid var(--accent);
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        color: var(--accent);
+        margin-left: 10px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .members-container {
+            padding: 20px 15px;
+        }
+        
+        .members-header h2 {
+            font-size: 2rem;
+        }
+        
+        .member-item {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+        
+        .member-info {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .member-actions {
+            justify-content: center;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .moon {
+            width: 60px;
+            height: 60px;
+            right: 5%;
+        }
+    }
+</style>
+
+<!-- Background Elements -->
+<div class="stars"></div>
+<div class="moon"></div>
+
+<div class="members-container">
+    <div class="members-header">
+        <h2>👥 Group Members</h2>
+        <div class="group-name">{{ group.name }}</div>
+    </div>
+
+    <div class="members-list">
+        <h3>Members <span class="member-count">{{ members|length }} total</span></h3>
+        
+        {% if members %}
+            {% for m in members %}
+                <div class="member-item">
+                    <div class="member-info">
+                        <span class="member-username">{{ m.username }}</span>
+                        {% if m == group.admin %}
+                            <span class="member-role">Creator</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="member-actions">
+                        {% if request.user == group.admin and m != group.admin %}
+                            <a href="{% url 'chat:remove_member' group.id m.id %}" 
+                               class="btn btn-danger"
+                               onclick="return confirm('Remove {{ m.username }} from the group?')">
+                               Remove
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                No members found in this group.
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="action-buttons">
+        <a href="{% url 'chat:group_detail' group.id %}" class="btn btn-secondary">
+            ← Back to Chat
+        </a>
+    </div>
+
+    {% if request.user == group.admin %}
+        <div class="admin-actions">
+            <h3>⚙️ Group Administration</h3>
+            <div class="danger-zone">
+                <h4>⚠️ Danger Zone</h4>
+                <a href="{% url 'chat:delete_group' group.id %}"
+                   class="btn btn-danger"
+                   onclick="return confirm('🚨 Are you sure you want to delete this group? ALL MESSAGES AND DATA WILL BE PERMANENTLY LOST!')">
+                   🗑️ Delete Group Forever
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    // Shooting stars for consistency
+    function createShootingStar() {
+        const star = document.createElement('div');
+        star.className = 'shooting-star';
+        star.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: ${Math.random() * 100}vw;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 6px 1px white;
+            opacity: 0;
+            z-index: -1;
+        `;
+        document.body.appendChild(star);
+
+        const animation = star.animate([
+            { transform: 'translateY(0) translateX(0)', opacity: 1 },
+            { transform: `translateY(${window.innerHeight + 100}px) translateX(${Math.random() * 200 - 100}px)`, opacity: 0 }
+        ], {
+            duration: Math.random() * 2000 + 1000,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        });
+
+        animation.onfinish = () => star.remove();
+    }
+
+    // Create shooting stars periodically
+    setInterval(createShootingStar, 5000);
+    // Create some initial stars
+    for (let i = 0; i < 2; i++) {
+        setTimeout(createShootingStar, i * 2000);
+    }
+</script>
+{% endblock %}

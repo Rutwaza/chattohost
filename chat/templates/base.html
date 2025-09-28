@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SecretChat - Secure Communication{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #00ffea;
+            --secondary-color: #ff00d4;
+            --background-color: #0a0a12;
+            --card-bg: rgba(10, 15, 30, 0.9);
+            --text-primary: #00ffea;
+            --text-secondary: #a0f0eb;
+            --error-color: #ff3333;
+        }
+        
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 234, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 212, 0.05) 0%, transparent 20%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Matrix Rain Effect */
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        /* Header Styles */
+        header {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 255, 234, 0.3);
+            background: rgba(0, 20, 40, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px var(--primary-color);
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 25px;
+        }
+        
+        .nav-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 10px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary-color);
+            text-shadow: 0 0 5px var(--secondary-color);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Main Content Area */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            min-height: calc(100vh - 140px);
+        }
+        
+        /* Messages/Alerts */
+        .messages-container {
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border-left: 4px solid;
+            background: var(--card-bg);
+        }
+        
+        .message.success {
+            border-left-color: #00ff00;
+            color: #00ff00;
+        }
+        
+        .message.error {
+            border-left-color: var(--error-color);
+            color: var(--error-color);
+        }
+        
+        .message.info {
+            border-left-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .message.warning {
+            border-left-color: #ffbd2e;
+            color: #ffbd2e;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 20px 0;
+            text-align: center;
+            border-top: 1px solid rgba(0, 255, 234, 0.3);
+            color: var(--text-secondary);
+            font-size: 14px;
+            background: rgba(0, 20, 40, 0.8);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-bottom: 15px;
+        }
+        
+        .footer-links li {
+            margin: 0 15px;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .mt-20 {
+            margin-top: 20px;
+        }
+        
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Form Elements (for reuse across pages) */
+        .form-container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 234, 0.3);
+            box-shadow: 0 0 30px rgba(0, 255, 234, 0.2);
+        }
+        
+        .form-header {
+            background: rgba(0, 20, 40, 0.8);
+            color: var(--primary-color);
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 255, 234, 0.3);
+        }
+        
+        .form-body {
+            padding: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(5, 10, 20, 0.8);
+            border: 1px solid rgba(0, 255, 234, 0.5);
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .form-group input:focus, 
+        .form-group textarea:focus, 
+        .form-group select:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 0, 212, 0.5);
+        }
+        
+        .form-group input.error, 
+        .form-group textarea.error, 
+        .form-group select.error {
+            border-color: var(--error-color);
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
+        }
+        
+        .errorlist {
+            color: var(--error-color);
+            margin-top: 4px;
+            list-style: none;
+            font-size: 11px;
+            animation: glitch 0.5s linear;
+        }
+        
+        @keyframes glitch {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-3px); }
+            40% { transform: translateX(3px); }
+            60% { transform: translateX(-3px); }
+            80% { transform: translateX(3px); }
+            100% { transform: translateX(0); }
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background: var(--primary-color);
+            color: var(--background-color);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+        
+        .btn-secondary {
+            border-color: var(--secondary-color);
+            color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--secondary-color);
+            color: var(--background-color);
+            box-shadow: 0 0 20px var(--secondary-color);
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                padding: 10px 20px;
+            }
+            
+            .logo {
+                margin-bottom: 10px;
+                font-size: 20px;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .nav-links li {
+                margin-left: 0;
+            }
+            
+            .main-container {
+                padding: 20px 15px;
+            }
+            
+            .form-container {
+                max-width: 100%;
+            }
+        }
+        
+        /* Chat-specific styles that can be extended */
+        .chat-container {
+            display: flex;
+            height: 70vh;
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 255, 234, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .users-panel {
+            width: 250px;
+            border-right: 1px solid rgba(0, 255, 234, 0.3);
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .chat-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .messages-panel {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .message-input-panel {
+            padding: 15px;
+            border-top: 1px solid rgba(0, 255, 234, 0.3);
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix"></canvas>
+    
+    <header>
+        <div class="nav-container">
+            <a href="{% url 'chat:index' %}" class="logo">Nexon<span>Chatx</span></a>
+            <ul class="nav-links">
+                {% if user.is_authenticated %}
+                    <li><a href="">Dashboard</a></li>
+                    <li><a href="">Profile</a></li>
+                    <li><a href="{% url 'chat:logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'chat:login' %}">Login</a></li>
+                    <li><a href="{% url 'chat:register' %}">Register</a></li>
+                    <li><a href="{% url 'chat:founder' %}">Founder</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </header>
+    
+    <main class="main-container">
+        <!-- Messages/Notifications -->
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- Page-specific content -->
+        {% block content %}
+        {% endblock %}
+    </main>
+    
+    <footer>
+        <ul class="footer-links">
+            <li><a href="{% url 'chat:landing' %}">Home</a></li>
+            <li><a href="{% url 'chat:founder' %}">About Founder</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+        </ul>
+        <p>&copy; 2023 SecretChat. All rights reserved. Built with <span style="color:var(--secondary-color)">&lt;3</span> for privacy advocates.</p>
+    </footer>
+
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*";
+        const charArray = chars.split('');
+        
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        
+        const drops = [];
+        
+        for(let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 18, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ffea';
+            ctx.font = fontSize + 'px Share Tech Mono';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 35);
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Utility function for password toggling
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = passwordInput.parentNode.querySelector('.password-toggle i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+        
+        // Auto-hide messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach(message => {
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    setTimeout(() => {
+                        message.style.display = 'none';
+                    }, 500);
+                }, 5000);
+            });
+            
+            // Add error styling to fields with errors
+            const errorInputs = document.querySelectorAll('.errorlist');
+            errorInputs.forEach(errorList => {
+                const input = errorList.previousElementSibling;
+                if (input && (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA' || input.tagName === 'SELECT')) {
+                    input.classList.add('error');
+                }
+            });
+        });
+    
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
